@@ -3,7 +3,7 @@ using Review.Contracts.Entities;
 
 namespace Review.DataAccess
 {
-    public class ReviewDbContext: DbContext
+    public class ProductReviewDbContext: DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
