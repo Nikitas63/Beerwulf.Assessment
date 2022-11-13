@@ -1,4 +1,6 @@
-﻿namespace Review.Resources.ProductReview.Create
+﻿using System;
+
+namespace Review.Resources.ProductReview.Create
 {
     public class ProductReviewCreateRequestResource
     {
@@ -6,5 +8,7 @@
         public string ProductReviewTitle { get; set; }
         public string ProductReviewComment { get; set; }
         public bool? ProductReviewIsRecommend { get; set; }
+        
+        public Guid ProductId { get; set; }
     }
 }

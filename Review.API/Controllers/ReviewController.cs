@@ -36,13 +36,13 @@ namespace Review.API.Controllers
         /// <returns>Paged product reviews</returns>
         [HttpGet]
         [Route("{productId:guid}")]
-        [ProducesResponseType((int) HttpStatusCode.OK, Type = typeof(PageResource<ProductReview>))]
+        [ProducesResponseType((int) HttpStatusCode.OK, Type = typeof(PageResource<ProductReviewResource>))]
         [ProducesResponseType((int) HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> GetProductReviews(Guid productId, int pageNumber = 1, int pageSize = 20)
         {
             var result = await _productReviewService.GetProductReviewsAsync(productId, pageNumber, pageSize);
 
-            return Ok(_mapper.Map<PageResource<ProductReview>>(result));
+            return Ok(_mapper.Map<PageResource<ProductReviewResource>>(result));
         }
         
         /// <summary>
@@ -52,13 +52,13 @@ namespace Review.API.Controllers
         /// <returns>Product review summary</returns>
         [HttpGet]
         [Route("summary/{productId:guid}")]
-        [ProducesResponseType((int) HttpStatusCode.OK, Type = typeof(ProductReviewResource))]
+        [ProducesResponseType((int) HttpStatusCode.OK, Type = typeof(ProductReviewsSummaryResource))]
         [ProducesResponseType((int) HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> GetProductReviewsSummary(Guid productId)
         {
             var result = await _productReviewService.GetProductReviewsSummaryAsync(productId);
 
-            return Ok(_mapper.Map<ProductReviewResource>(result));
+            return Ok(_mapper.Map<ProductReviewsSummaryResource>(result));
         }
         
         /// <summary>

@@ -2,7 +2,7 @@
 {
     public class ErrorResource
     {
-        public string Field { get; set; }
+        public string FieldName { get; set; }
         public string Message { get; set; }
     }
 }

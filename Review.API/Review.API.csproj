@@ -23,8 +23,4 @@
     <ProjectReference Include="..\Review.Resources\Review.Resources.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="AppStart" />
-  </ItemGroup>
-
 </Project>

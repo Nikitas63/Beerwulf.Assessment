@@ -4,7 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Review.API.AppStart;
+using Review.Business.Services;
+using Review.Contracts.Repositories;
+using Review.Contracts.Services;
 using Review.DataAccess;
+using Review.DataAccess.Repositories;
 
 namespace Review.API
 {
@@ -22,6 +27,10 @@ namespace Review.API
         {
             services.AddDbContext<ProductReviewDbContext>();
             
+            services.AddTransient<IProductReviewService, ProductReviewService>();
+            services.AddTransient<IProductReviewRepository, ProductReviewRepository>();
+            services.AddSingleton(AutoMapperConfig.Configure().CreateMapper());
+
             services
                 .AddMvc(a => { a.EnableEndpointRouting = false; })
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
