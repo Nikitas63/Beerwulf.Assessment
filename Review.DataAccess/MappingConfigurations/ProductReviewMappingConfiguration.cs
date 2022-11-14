@@ -8,6 +8,8 @@ namespace Review.DataAccess.MappingConfigurations
     {
         public void Configure(EntityTypeBuilder<ProductReview> builder)
         {
+            builder.HasKey(e => e.ProductReviewId);
+
             builder.Property(e => e.ProductReviewScore)
                 .IsRequired();
 

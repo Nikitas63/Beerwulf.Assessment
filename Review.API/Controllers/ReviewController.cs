@@ -62,7 +62,7 @@ namespace Review.API.Controllers
         }
         
         /// <summary>
-        /// Gets product review summary
+        /// Creates product review
         /// </summary>
         /// <param name="productReview">Product review to create</param>
         /// <returns>Created product review</returns>
