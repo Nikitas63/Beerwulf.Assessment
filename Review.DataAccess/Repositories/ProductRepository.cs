@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Review.Business.Extensions;
 using Review.Contracts.Entities;
 using Review.Contracts.Pagination;
@@ -18,6 +19,11 @@ namespace Review.DataAccess.Repositories
         public async Task<Page<Product>> GetProductsAsync(int page = 1, int size = int.MaxValue)
         {
             return await _dbContext.Products.ToPageAsync(page, size);
+        }
+
+        public async Task<Product> GetProductAsync(Guid productId)
+        {
+            return await _dbContext.Products.FirstOrDefaultAsync(p => p.ProductId == productId);
         }
     }
 }

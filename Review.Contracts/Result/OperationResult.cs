@@ -41,15 +41,16 @@ namespace Review.Contracts.Result
         #endregion
         
         #region Invalid results
-        
+
         /// <summary>
         /// Creates an invalid result with a single validation error
         /// </summary>
+        /// <param name="payload">Payload</param>
         /// <param name="fieldName">The name of invalid property</param>
         /// <param name="message">Validation message</param>
-        public static OperationResult<T> CreateInvalid(string fieldName, string message) =>
+        public static OperationResult<T> CreateInvalid(T payload, string fieldName, string message) =>
             Create(
-                payload: default,
+                payload,
                 OperationStatus.InvalidInput,
                  new List<ErrorModel>
                  {

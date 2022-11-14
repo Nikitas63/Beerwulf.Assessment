@@ -42,29 +42,8 @@ namespace Review.API
             {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo {Title = "Review API", Version = "v1"});
             });
-
-            using (var context = new ProductReviewDbContext())
-            {
-                context.Database.EnsureCreated();
             
-                context.Products.Add(new Product
-                {
-                    ProductId = Guid.NewGuid(),
-                    ProductName = "Test1",
-                    ProductDescription = "Desc"
-                });
-            
-                context.Products.Add(new Product
-                {
-                    ProductId = Guid.NewGuid(),
-                    ProductName = "Test2",
-                    ProductDescription = "Desc"
-                });
-            
-                context.SaveChanges();
-            }
-            
-
+            DataSeeder.SeedData();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

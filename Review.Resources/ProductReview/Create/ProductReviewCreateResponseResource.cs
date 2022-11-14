@@ -10,5 +10,7 @@ namespace Review.Resources.ProductReview.Create
         public string ProductReviewTitle { get; set; }
         public string ProductReviewComment { get; set; }
         public bool? ProductReviewIsRecommend { get; set; }
+        
+        public Guid ProductId { get; set; }
     }
 }

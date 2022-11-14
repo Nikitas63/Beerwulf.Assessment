@@ -41,6 +41,8 @@ namespace Review.API.AppStart
                         opt => opt.MapFrom(v => v.Payload.ProductReviewComment))
                     .ForMember(r => r.ProductReviewIsRecommend,
                         opt => opt.MapFrom(v => v.Payload.ProductReviewIsRecommend))
+                    .ForMember(r => r.ProductId,
+                        opt => opt.MapFrom(v => v.Payload.ProductId))
                     .ForMember(r => r.Errors,
                         opt => opt.MapFrom(v => v.Errors));
                 });

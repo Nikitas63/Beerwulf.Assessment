@@ -15,11 +15,15 @@ namespace Review.Business.Services
         private const byte ScoreMinValue = 1;
         private const byte ScoreMaxValue = 5;
         
-        private readonly IProductReviewRepository _repository;
-        
-        public ProductReviewService(IProductReviewRepository repository)
+        private readonly IProductReviewRepository _productReviewRepository;
+        private readonly IProductRepository _productRepository;
+
+        public ProductReviewService(
+            IProductReviewRepository productReviewRepository,
+            IProductRepository productRepository)
         {
-            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _productReviewRepository = productReviewRepository ?? throw new ArgumentNullException(nameof(productReviewRepository));
+            _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
         }
         
         /// <summary>
@@ -31,14 +35,17 @@ namespace Review.Business.Services
         {
             // TODO: move to separate validation service
             if (review == null)
-                return OperationResult<ProductReview>.CreateInvalid(nameof(review), "Product review is null");
+                return OperationResult<ProductReview>.CreateInvalid(review, nameof(review), "Product review is null");
             if (string.IsNullOrWhiteSpace(review.ProductReviewTitle))
-                return OperationResult<ProductReview>.CreateInvalid(nameof(review.ProductReviewTitle), "Title should be filled");
-            if (review.ProductReviewScore < ScoreMinValue || review.ProductReviewScore > ScoreMaxValue)
-                return OperationResult<ProductReview>.CreateInvalid(nameof(review.ProductReviewScore), 
+                return OperationResult<ProductReview>.CreateInvalid(review, nameof(review.ProductReviewTitle), "Title should be filled");
+            if (review.ProductReviewScore is < ScoreMinValue or > ScoreMaxValue)
+                return OperationResult<ProductReview>.CreateInvalid(review, nameof(review.ProductReviewScore), 
                     $"Score should be from {ScoreMinValue} to {ScoreMaxValue}");
+            if (await _productRepository.GetProductAsync(review.ProductId) == null)
+                return OperationResult<ProductReview>.CreateInvalid(review, nameof(review.ProductId), 
+                    $"Product with Id {review.ProductId} does not exist");
 
-            var createdReview = await _repository.CreateProductReviewAsync(review);
+            var createdReview = await _productReviewRepository.CreateProductReviewAsync(review);
             
             return OperationResult<ProductReview>.Create(createdReview);
         }
@@ -50,19 +57,19 @@ namespace Review.Business.Services
         /// <returns>Product review summary</returns>
         public async Task<ProductReviewsSummary> GetProductReviewsSummaryAsync(Guid productId)
         {
-            var reviews = await _repository.GetProductReviewsAsync(productId);
+            var reviews = await _productReviewRepository.GetProductReviewsAsync(productId);
             if (!reviews.Data.Any())
                 return new ProductReviewsSummary();
             
             var scores = reviews.Data.Select(r => r.ProductReviewScore).ToList();
-            var averageScore = scores.Sum() / scores.Count;
-            var percentOfRecommendations = reviews.Data.Count(r => r.ProductReviewIsRecommend == true)
-                                           / reviews.Data.Count();
+            var averageScore = (double) scores.Sum() / scores.Count;
+            var numberOfRecommendations = (double) reviews.Data.Count(r => r.ProductReviewIsRecommend == true)
+                                              / reviews.Data.Count();
 
             return new ProductReviewsSummary
             {
                 AverageScore = averageScore,
-                PercentOfRecommendations = percentOfRecommendations
+                PercentOfRecommendations = numberOfRecommendations * 100
             };
         }
 
@@ -79,7 +86,7 @@ namespace Review.Business.Services
             if (page <= 0 || size <= 0)
                 return new Page<ProductReview>();
 
-            return await _repository.GetProductReviewsAsync(productId, page, size);
+            return await _productReviewRepository.GetProductReviewsAsync(productId, page, size);
         }
     }
 }
