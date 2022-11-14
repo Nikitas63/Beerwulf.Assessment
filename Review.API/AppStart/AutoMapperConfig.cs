@@ -5,6 +5,7 @@ using Review.Contracts.Pagination;
 using Review.Contracts.Result;
 using Review.Resources.Base;
 using Review.Resources.Pagination;
+using Review.Resources.Product;
 using Review.Resources.ProductReview;
 using Review.Resources.ProductReview.Create;
 
@@ -19,8 +20,9 @@ namespace Review.API.AppStart
                 cfg.CreateMap<PaginationContext, PaginationContextResource>(); 
                 cfg.CreateMap(typeof(Page<>), typeof(PageResource<>));
                 
-                cfg.CreateMap<ProductReview, ProductReviewResource>();
+                cfg.CreateMap<Product, ProductResource>();
 
+                cfg.CreateMap<ProductReview, ProductReviewResource>();
                 cfg.CreateMap<ProductReviewsSummary, ProductReviewsSummaryResource>();
 
                 cfg.CreateMap<ProductReviewCreateRequestResource, ProductReview>()

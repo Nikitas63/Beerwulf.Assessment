@@ -51,7 +51,7 @@ namespace Review.API.Controllers
         /// <param name="productId">Product id</param>
         /// <returns>Product review summary</returns>
         [HttpGet]
-        [Route("summary/{productId:guid}")]
+        [Route("{productId:guid}/summary")]
         [ProducesResponseType((int) HttpStatusCode.OK, Type = typeof(ProductReviewsSummaryResource))]
         [ProducesResponseType((int) HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> GetProductReviewsSummary(Guid productId)

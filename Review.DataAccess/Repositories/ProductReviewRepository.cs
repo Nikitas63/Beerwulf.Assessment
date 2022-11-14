@@ -19,16 +19,16 @@ namespace Review.DataAccess.Repositories
         public async Task<ProductReview> CreateProductReviewAsync(ProductReview review)
         {
             //TODO: create base entity repository for CRUD operations
-            review.ProductId = Guid.NewGuid(); // imitation of Id generation on DB side
+            review.ProductReviewId = Guid.NewGuid(); // imitation of Id generation on DB side
             _dbContext.ProductReviews.Add(review);
             await _dbContext.SaveChangesAsync();
             return review;
         }
 
-        public Task<Page<ProductReview>> GetProductReviewsAsync(Guid productId, int page = 1, int size = int.MaxValue)
+        public async Task<Page<ProductReview>> GetProductReviewsAsync(Guid productId, int page = 1, int size = int.MaxValue)
         {
             var query = _dbContext.ProductReviews.Where(r => r.ProductId == productId);
-            return query.ToPageAsync(page, size);
+            return await query.ToPageAsync(page, size);
         }
     }
 }

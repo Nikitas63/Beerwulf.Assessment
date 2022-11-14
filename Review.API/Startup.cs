@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Review.API.AppStart;
 using Review.Business.Services;
+using Review.Contracts.Entities;
 using Review.Contracts.Repositories;
 using Review.Contracts.Services;
 using Review.DataAccess;
@@ -29,6 +31,8 @@ namespace Review.API
             
             services.AddTransient<IProductReviewService, ProductReviewService>();
             services.AddTransient<IProductReviewRepository, ProductReviewRepository>();
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IProductRepository, ProductRepository>();
             services.AddSingleton(AutoMapperConfig.Configure().CreateMapper());
 
             services
@@ -38,6 +42,29 @@ namespace Review.API
             {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo {Title = "Review API", Version = "v1"});
             });
+
+            using (var context = new ProductReviewDbContext())
+            {
+                context.Database.EnsureCreated();
+            
+                context.Products.Add(new Product
+                {
+                    ProductId = Guid.NewGuid(),
+                    ProductName = "Test1",
+                    ProductDescription = "Desc"
+                });
+            
+                context.Products.Add(new Product
+                {
+                    ProductId = Guid.NewGuid(),
+                    ProductName = "Test2",
+                    ProductDescription = "Desc"
+                });
+            
+                context.SaveChanges();
+            }
+            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

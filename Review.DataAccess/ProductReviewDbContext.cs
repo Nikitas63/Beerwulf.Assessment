@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Review.Contracts.Entities;
 
 namespace Review.DataAccess
@@ -9,7 +10,7 @@ namespace Review.DataAccess
         {
             optionsBuilder.UseInMemoryDatabase(databaseName: "BeerWulfReview");
         }
-        
+
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductReview> ProductReviews { get; set; }
     }
